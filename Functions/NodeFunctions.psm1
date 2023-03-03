@@ -6,14 +6,27 @@ Function Get-EnvironmentNodes{
     try {
         # Get all existing environments
         $Environments = Get-AdminPowerAppEnvironment
+        if ($Null -eq $Environments) {
+            Write-Host "    Retrying." -ForegroundColor Yellow
+            $Environments = Get-AdminPowerAppEnvironment
+        }
+
+        Write-Host $Environments
+
 
         # Iterate
+        $Count = $Null
+        if ( $Environments.length -ne 0 -and $Null -eq $Environments.count ) {
+            $Count = 1
+        } else {
+            $Count = $Environments.count
+        }
         $Counter = 0
         ForEach($Environment in $Environments) {
             $Counter++
             Write-Progress -Id 1 -Activity "Gathering Environments" `
                 -Status "$($Environment.DisplayName)" `
-                -PercentComplete ($Counter * 100 / $Environments.Count)
+                -PercentComplete ($Counter * 100 / $Count)
             
             $Node = [Environment]::new(
                 $Environment.Id,
@@ -31,7 +44,10 @@ Function Get-EnvironmentNodes{
                 $Environment.EnvironmentType
             )
 
-            return += $Node
+            Write-Progress -Id 1 -Activity "Gathering environments." `
+                -Completed
+
+            $Return += $Node
 
         }
 
