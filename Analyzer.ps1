@@ -55,5 +55,5 @@ Remove-Module -Name NodeFunctions
 Remove-Module -Name Setup
 Remove-PowerAppsAccount
 
-Write-Host "`r`  Exiting." -ForegroundColor White
+Write-Host "`r` Exiting." -ForegroundColor White
 

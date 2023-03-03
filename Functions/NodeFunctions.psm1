@@ -11,9 +11,6 @@ Function Get-EnvironmentNodes{
             $Environments = Get-AdminPowerAppEnvironment
         }
 
-        Write-Host $Environments
-
-
         # Iterate
         $Count = $Null
         if ( $Environments.length -ne 0 -and $Null -eq $Environments.count ) {
