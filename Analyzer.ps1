@@ -44,6 +44,18 @@ try {
         throw " Unable to gather envirnoments.`r`n $_"
     }
 
+    ## Get Apps
+    try {
+        Write-Host "   Collecting Apps." -ForegroundColor Yellow
+        $Apps = Get-AppNodes
+        if ( $Apps.count -gt 0) {
+            Export-Data -Data $Apps -Name "Apps"
+        }
+
+    } catch {
+        throw " Unable to gather apps.`r`n $_"
+    }
+
 } catch {
     Write-Host "`r`n Error encountered." -ForegroundColor Red
     Write-Host $_ -ForegroundColor Red
@@ -53,6 +65,7 @@ Write-Host "`r`n Cleaning Up" -ForegroundColor White
 Remove-Module -Name Nodes
 Remove-Module -Name NodeFunctions
 Remove-Module -Name Setup
+Remove-Module -Name ExportFunctions
 Remove-PowerAppsAccount
 
 Write-Host "`r` Exiting." -ForegroundColor White

@@ -1,10 +1,10 @@
-Class BaseClass {
+Class BaseNode {
     [String]$Id
     [String]$Type
     [String]$DisplayName
 
-    BaseClass(){}
-    BaseClass(
+    BaseNode(){}
+    BaseNode(
         [String]$Id,
         [String]$Type,
         [String]$DisplayName
@@ -15,7 +15,7 @@ Class BaseClass {
     }
 }
 
-Class Environment:BaseClass {
+Class Environment : BaseNode {
     [String]$EnvironmentName
     [Bool]$IsDefault
     [String]$Location
@@ -28,6 +28,7 @@ Class Environment:BaseClass {
     [String]$EnvironmentType
 
     Environment(){}
+
     Environment(       
         [String]$Id,
         [String]$Type,
@@ -54,4 +55,31 @@ Class Environment:BaseClass {
         $this.LastModifiedBy = $LastModifiedBy
         $this.EnvironmentType = $EnvironmentType
         }
+}
+
+Class AppNode : BaseNode {
+    [String]$CreatedTime
+    [String]$Owner
+    [String]$LastModifiedTime
+    [String]$Environment
+    [String]$BypassConsent
+
+    AppNode(){}
+
+    AppNode(
+        [String]$Id,
+        [String]$Type,
+        [String]$DisplayName,
+        [String]$CreatedTime,
+        [String]$Owner,
+        [String]$LastModifiedTime,
+        [String]$Environment,
+        [String]$BypassConsent
+    ) : base ($Id, $Type, $DisplayName) {
+        $this.CreatedTime = $CreatedTime
+        $this.Owner = $Owner
+        $this.LastModifiedTime = $LastModifiedTime
+        $this.Environment = $Environment
+        $this.BypassConsent = $BypassConsent    
+    }
 }

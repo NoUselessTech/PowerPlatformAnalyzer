@@ -1,5 +1,52 @@
 Using Module ..\Classes\Nodes.psm1
 
+Function Get-AppNodes {
+    # Simple function to transform power apps to ps class
+    $Return = @()
+    try {
+        # Get all existing apps
+        $Apps = Get-AdminPowerApp
+        if ( $Null -eq $Apps) {
+            Write-Host "    Retrying." -ForegroundColor Yellow
+            $Apps = Get-AdminPowerApp
+        }
+
+        # Iterate through for conversion
+        $Counter = 0
+        $Count = $Null
+        if ( $Apps.Length -ne 0 -and $Null -eq $Apps.Count) {
+            $Count = 1
+        } else {
+            $Count = $Apps.Count
+        }
+        ForEach($App in $Apps) {
+            Write-Progress -Id 1 -Activity "Gathering Apps" `
+                -Status "$($App.DisplayName)"`
+                -PercentComplete ($Counter * 100 / $Count)
+
+            $Node = [AppNode]::new()
+            
+            $Node.Id = $App.AppName
+            $Node.Type = "App"
+            $Node.DisplayName = $App.DisplayName
+            $Node.CreatedTime = $App.CreatedTime
+            $Node.Owner = $App.Owner
+            $Node.LastModifiedTime = $App.LastModifiedTime
+            $Node.Environment = $App.EnvironmentName
+            $Node.BypassConsent = $App.BypassConsent
+            
+            $Return += $Node
+        }
+
+        Write-Progress -Id 1 -Activity "Gathering Apps" -Completed
+
+        return $Return
+
+    } catch {
+        throw $_
+    }
+}
+
 Function Get-EnvironmentNodes{
     # Simple function to transform information from admin api to class
     $Return = @()

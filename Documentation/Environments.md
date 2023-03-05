@@ -1,11 +1,14 @@
 # Environments
 Environment in PowerPlatform are ways to group apps, data, and flows together and restrict their access through security groups. Effectively, these are the "resource groups" of powerplatform.
 
-# Default
+## Default
 By default, no environments are in use within the organization.
 
-# List Environments
-Get-AdminPowerAppEnvironment
+## List Environments
+Command:
+`Get-AdminPowerAppEnvironment`
+
+Return:
 ```
 {
 	"EnvironmentName": "Default-3a6daad1-6fd0-4543-8a89-4f7b01e7458d",
@@ -59,9 +62,11 @@ Get-AdminPowerAppEnvironment
 }
 ```
 
-# Create Environment
-New-AdminPowerAppEnvironment -DisplayName "TestEnv" -ProvisionDatabase:$True -Description "TestEnv" -LocationName "unitedstates" -EnvironmentSku Sandbox 
+## Create Environment
+Command:
+`New-AdminPowerAppEnvironment -DisplayName "TestEnv" -ProvisionDatabase:$True -Description "TestEnv" -LocationName "unitedstates" -EnvironmentSku Sandbox` 
 
-# Remove Environment
-Remove-AdminPowerAppEnvironment -EnvironmentName <EnvironmentName> 
+## Remove Environment
+Command:
+`Remove-AdminPowerAppEnvironment -EnvironmentName <EnvironmentName> `
 
