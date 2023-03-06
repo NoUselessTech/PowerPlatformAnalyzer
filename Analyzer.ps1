@@ -56,6 +56,18 @@ try {
         throw " Unable to gather apps.`r`n $_"
     }
 
+    ## Get Flows
+    try {
+        Write-Host "   Collecting Flows." -ForegroundColor Yellow
+        $Flows = Get-FlowNodes
+        if ( $Flows.count -gt 0) {
+            Export-Data -Data $Flows -Name "Flows"
+        }
+
+    } catch {
+        throw " Unable to gather flows.`r`n $_"
+    }
+
 } catch {
     Write-Host "`r`n Error encountered." -ForegroundColor Red
     Write-Host $_ -ForegroundColor Red

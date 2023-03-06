@@ -15,6 +15,53 @@ Class BaseNode {
     }
 }
 
+Class FlowNode : BaseNode {
+    [Bool]$Enabled
+    [String]$UserType
+    [String]$CreatedTime
+    [String]$CreatedBy
+    [String]$LastModifiedTime
+    [String]$EnvironmentName
+    [Bool]$IsManaged
+    [String]$State
+    [Bool]$FlowFailureAlertSubscribed
+    [String]$FlowSuspensionReason
+    [String]$Triggers
+    [String]$Actions
+
+    FlowNode(){}
+    FlowNode(
+        [String]$Id,
+        [String]$Type,
+        [String]$DisplayName,
+        [Bool]$Enabled,
+        [String]$UserType,
+        [String]$CreatedTime,
+        [String]$CreatedBy,
+        [String]$LastModifiedTime,
+        [String]$EnvironmentName,
+        [Bool]$IsManaged,
+        [String]$State,
+        [Bool]$FlowFailureAlertSubscribed,
+        [String]$FlowSuspensionReason,
+        [String]$Triggers,
+        [String]$Actions
+    ) : base ($Id, $Type, $DisplayName) {
+        $this.Enabled = $Enabled
+        $this.UserType = $UserType
+        $this.CreatedTime = $CreatedTime
+        $this.CreatedBy = $CreatedBy
+        $this.LastModifiedTime = $LastModifiedTime
+        $this.EnvironmentName = $EnvironmentName
+        $this.IsManaged = $IsManaged
+        $this.State = $State
+        $this.FlowFailureAlertSubscribed = $FlowFailureAlertSubscribed
+        $this.FlowSuspensionReason = $FlowSuspensionReason
+        $this.Triggers = $Triggers
+        $this.Actions = $Actions
+    }
+}
+
 Class Environment : BaseNode {
     [String]$EnvironmentName
     [Bool]$IsDefault

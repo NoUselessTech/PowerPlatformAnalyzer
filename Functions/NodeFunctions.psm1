@@ -1,5 +1,64 @@
 Using Module ..\Classes\Nodes.psm1
 
+Function Get-FlowNodes {
+    # Simple function to transform flow objects to single level class
+    $Return = @()
+
+    try {
+        # Get all the Flows
+        $Flows = Get-AdminFlow
+        if ( $Null -eq $Flows) {
+            Write-Host "   Retrying." -ForegroundColor Yellow
+            $Flows = Get-AdminFlow
+        }
+
+        # Setup Counters
+        $Counter = 0
+        $Count = $Flows.Count
+        
+        if( $Null -eq $Flows.Count -and $Flows.length -ne 0) {
+            $Count = 1
+        }
+
+        $Flows
+        
+        # Iterate
+        ForEach($Flow in $Flows) {
+            $Counter++
+            Write-Progress `
+                -Id 1 `
+                -Activity "Gathering Flows." `
+                -Status $Flow.DisplayName `
+                -PercentComplete ((100 * $Counter)/$Count)
+
+            $Node = [FlowNode]::new()
+            
+            $Node.Id = $Flow.FlowName
+            $Node.Type = "Flow"
+            $Node.DisplayName = $Flow.DisplayName
+            $Node.Enabled = $Flow.Enabled
+            $Node.UserType = $Flow.UserType
+            $Node.CreatedTime = $Flow.CreatedTime
+            $Node.CreatedBy = $Flow.CreatedBy
+            $Node.LastModifiedTime = $Flow.LastModifiedTime
+            $Node.EnvironmentName = $Flow.EnvironmentName
+            $Node.IsManaged = $Flow.Internal.Properties.isManaged
+            $Node.State = $Flow.Internal.Properties.state
+            $Node.FlowFailureAlertSubscribed = $Flow.Internal.Properties.flowFailureAlertSubscribed
+            $Node.FlowSuspensionReason = $Flow.Internal.Properties.flowSuspensionReason
+            $Node.Triggers = ($Flow.Internal.Properties.definition.triggers | ConvertTo-Json -Compress -Depth 100)
+            $Node.Actions = ($Flow.Internal.Properties.definition.actions | ConvertTo-Json -Compress -Depth 100)
+            
+
+            $Return += $Node
+        }
+
+        return $Return
+    } catch {
+        throw $_
+    }
+}
+
 Function Get-AppNodes {
     # Simple function to transform power apps to ps class
     $Return = @()
@@ -20,6 +79,7 @@ Function Get-AppNodes {
             $Count = $Apps.Count
         }
         ForEach($App in $Apps) {
+            $Counter++
             Write-Progress -Id 1 -Activity "Gathering Apps" `
                 -Status "$($App.DisplayName)"`
                 -PercentComplete ($Counter * 100 / $Count)
@@ -92,7 +152,6 @@ Function Get-EnvironmentNodes{
                 -Completed
 
             $Return += $Node
-
         }
 
         return $Return
