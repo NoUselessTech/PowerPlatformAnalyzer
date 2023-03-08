@@ -130,3 +130,35 @@ Class AppNode : BaseNode {
         $this.BypassConsent = $BypassConsent    
     }
 }
+
+Class ConnectionNode : BaseNode {
+    [String]$FullConnectorName
+    [String]$ConnectorName
+    [String]$CreatedTime
+    [String]$CreatedBy
+    [String]$LastModifiedTime
+    [String]$EnvironmentName
+    [Bool]$AllowSharing
+
+    ConnectionNode(){}
+    ConnectionNode(
+        [String]$Id,
+        [String]$Type,
+        [String]$DisplayName,
+        [String]$FullConnectorName,
+        [String]$ConnectorName,
+        [String]$CreatedTime,
+        [String]$CreatedBy,
+        [String]$LastModifiedTime,
+        [String]$EnvironmentName,
+        [Bool]$AllowSharing
+     ) : base ( $Id, $Type, $DisplayName) {
+        $this.FullConnectorName = $FullConnectorName
+        $this.ConnectorName = $ConnectorName
+        $this.CreatedTime = $CreatedTime
+        $this.CreatedBy = $CreatedBy
+        $this.LastModifiedTime = $LastModifiedTime
+        $this.EnvironmentName = $EnvironmentName
+        $this.AllowSharing = $AllowSharing
+     }
+}

@@ -53,6 +53,9 @@ Function Get-FlowNodes {
             $Return += $Node
         }
 
+        Write-Progress -Id 1 -Activity "Gathering flows." `
+        -Completed
+
         return $Return
     } catch {
         throw $_
@@ -148,11 +151,60 @@ Function Get-EnvironmentNodes{
                 $Environment.EnvironmentType
             )
 
-            Write-Progress -Id 1 -Activity "Gathering environments." `
-                -Completed
-
             $Return += $Node
         }
+
+        Write-Progress -Id 1 -Activity "Gathering environments." `
+        -Completed
+
+        return $Return
+    } catch {
+        throw $_
+    }
+}
+
+Function Get-ConnectionNodes() {
+    # Gets and converts all PowerApp Connections
+    try {
+        $Return = @()
+        $Connections = Get-AdminPowerAppConnection
+        if ($Null -eq $Connections) {
+            Write-Host "    Retrying." -ForegroundColor Yellow
+            $Connections = Get-AdminPowerAppEnvironment
+        }
+
+        # Iterate
+        $Count = $Null
+        if ( $Connections.length -ne 0 -and $Null -eq $Connections.count ) {
+            $Count = 1
+        } else {
+            $Count = $Connections.count
+        }
+        $Counter = 0
+        ForEach($Connection in $Connections) {
+            $Counter++
+            Write-Progress -Id 1 -Activity "Gathering Connections" `
+                -Status "$($Connection.DisplayName)" `
+                -PercentComplete ($Counter * 100 / $Count)
+
+            $Node = [ConnectionNode]::new()
+            $Node.Id = $Connection.ConnectionName
+            $Node.Type = "Connection"
+            $Node.DisplayName = $Connection.DisplayName
+            $Node.FullConnectorName = $Connection.FullConnectorName
+            $Node.ConnectorName = $Connection.ConnectorName
+            $Node.CreatedTime = $Connection.CreatedTime
+            $Node.CreatedBy = $Connection.CreatedBy
+            $Node.LastModifiedTime = $Connection.LastModifiedTime
+            $Node.EnvironmentName = $Connection.EnvironmentName
+            $Node.AllowSharing = $Connection.AllowSharing
+
+            $Return += $Node
+
+        }
+
+        Write-Progress -Id 1 -Activity "Gathering connections." `
+            -Completed
 
         return $Return
     } catch {

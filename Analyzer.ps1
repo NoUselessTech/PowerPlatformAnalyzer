@@ -68,6 +68,17 @@ try {
         throw " Unable to gather flows.`r`n $_"
     }
 
+    ## Get Flows
+    try {
+        Write-Host "   Collecting Connections." -ForegroundColor Yellow
+        $Connections = Get-ConnectionNodes
+        if ( $Connections.count -gt 0) {
+            Export-Data -Data $Connections -Name "Connections"
+        }
+
+    } catch {
+        throw " Unable to gather connections.`r`n $_"
+    }
 } catch {
     Write-Host "`r`n Error encountered." -ForegroundColor Red
     Write-Host $_ -ForegroundColor Red
