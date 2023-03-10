@@ -63,7 +63,6 @@ Class FlowNode : BaseNode {
 }
 
 Class Environment : BaseNode {
-    [String]$EnvironmentName
     [Bool]$IsDefault
     [String]$Location
     [String]$CreatedDateTime
@@ -80,7 +79,6 @@ Class Environment : BaseNode {
         [String]$Id,
         [String]$Type,
         [String]$DisplayName,
-        [String]$EnvironmentName,
         [Bool]$IsDefault,
         [String]$Location,
         [String]$CreatedDateTime,
@@ -91,7 +89,6 @@ Class Environment : BaseNode {
         [String]$LastModifiedBy,
         [String]$EnvironmentType
     ) : base ($Id, $Type, $DisplayName) {
-        $this.EnvironmentName = $EnvironmentName
         $this.IsDefault = $IsDefault
         $this.Location = $Location
         $this.CreatedDateTime = $CreatedDateTime
@@ -108,7 +105,7 @@ Class AppNode : BaseNode {
     [String]$CreatedTime
     [String]$Owner
     [String]$LastModifiedTime
-    [String]$Environment
+    [String]$EnvironmentName
     [String]$BypassConsent
 
     AppNode(){}
@@ -120,13 +117,13 @@ Class AppNode : BaseNode {
         [String]$CreatedTime,
         [String]$Owner,
         [String]$LastModifiedTime,
-        [String]$Environment,
+        [String]$EnvironmentName,
         [String]$BypassConsent
     ) : base ($Id, $Type, $DisplayName) {
         $this.CreatedTime = $CreatedTime
         $this.Owner = $Owner
         $this.LastModifiedTime = $LastModifiedTime
-        $this.Environment = $Environment
+        $this.EnvironmentName = $EnvironmentName
         $this.BypassConsent = $BypassConsent    
     }
 }

@@ -19,8 +19,6 @@ Function Get-FlowNodes {
         if( $Null -eq $Flows.Count -and $Flows.length -ne 0) {
             $Count = 1
         }
-
-        $Flows
         
         # Iterate
         ForEach($Flow in $Flows) {
@@ -95,7 +93,7 @@ Function Get-AppNodes {
             $Node.CreatedTime = $App.CreatedTime
             $Node.Owner = $App.Owner
             $Node.LastModifiedTime = $App.LastModifiedTime
-            $Node.Environment = $App.EnvironmentName
+            $Node.EnvironmentName = $App.EnvironmentName
             $Node.BypassConsent = $App.BypassConsent
             
             $Return += $Node
@@ -136,10 +134,9 @@ Function Get-EnvironmentNodes{
                 -PercentComplete ($Counter * 100 / $Count)
             
             $Node = [Environment]::new(
-                $Environment.Id,
+                $Environment.EnvironmentName,
                 "Environment",
                 $Environment.DisplayName,
-                $Environment.EnvironmentName,
                 $Environment.IsDefault,
                 $Environment.Location,
                 $Environment.CreatedDateTime,

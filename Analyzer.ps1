@@ -1,6 +1,8 @@
 Using Module .\Classes\Nodes.psm1
+Using Module .\Classes\Edges.psm1
 Import-Module .\Functions\ExportFunctions.psm1
 Import-Module .\Functions\NodeFunctions.psm1
+Import-Module .\Functions\EdgeFunctions.psm1
 Import-Module .\Functions\Setup.psm1
 
 # PowerApps/PowerAutomate analysis tool
@@ -79,6 +81,21 @@ try {
     } catch {
         throw " Unable to gather connections.`r`n $_"
     }
+
+    ## Mapping Time
+    Write-host "`r`n Gathering edges." -ForegroundColor White
+
+    ## Map Environments
+    try {
+    Write-Host "   Mapping Environments." -ForegroundColor Yellow
+    $EnvironmentEdges = Get-EnvironmentEdges -Environments $Environments -Apps $Apps -Flows $Flows
+    if ( $EnvironmentEdges.count -gt 0) {
+        Export-Data -Data $EnvironmentEdges -Name "EnvironmentEdges"
+    }
+
+    } catch {
+        throw " Unable to gather connections.`r`n $_"
+    }
 } catch {
     Write-Host "`r`n Error encountered." -ForegroundColor Red
     Write-Host $_ -ForegroundColor Red
@@ -86,7 +103,9 @@ try {
 
 Write-Host "`r`n Cleaning Up" -ForegroundColor White
 Remove-Module -Name Nodes
+Remove-Module -Name Edges
 Remove-Module -Name NodeFunctions
+Remove-Module -Name EdgeFunctions
 Remove-Module -Name Setup
 Remove-Module -Name ExportFunctions
 Remove-PowerAppsAccount
