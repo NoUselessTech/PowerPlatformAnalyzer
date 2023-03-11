@@ -96,6 +96,19 @@ try {
     } catch {
         throw " Unable to gather connections.`r`n $_"
     }
+
+    ## Exporting Data
+    Write-host "`r`n Exporting Data." -ForegroundColor White
+
+    ## Node Exports
+    Export-CypherNode -Type "Node" -Data $Environments
+    Export-CypherNode -Type "Node" -Data $Apps -Method "Append"
+    Export-CypherNode -Type "Node" -Data $Flows -Method "Append"
+    Export-CypherNode -Type "Node" -Data $Connections -Method "Append"
+
+    ## Edge Exports
+    Export-CypherEdge -Type "Edge" -Data $EnvironmentEdges -Method "Append"
+
 } catch {
     Write-Host "`r`n Error encountered." -ForegroundColor Red
     Write-Host $_ -ForegroundColor Red
