@@ -4,7 +4,6 @@ Import-Module .\Functions\ExportFunctions.psm1
 Import-Module .\Functions\NodeFunctions.psm1
 Import-Module .\Functions\EdgeFunctions.psm1
 Import-Module .\Functions\Setup.psm1
-
 # PowerApps/PowerAutomate analysis tool
 # Author: Connor Peoples
 
@@ -46,6 +45,18 @@ try {
         throw " Unable to gather envirnoments.`r`n $_"
     }
 
+    ## Get Connectors
+    try {
+        Write-Host "   Collecting connectors." -ForegroundColor Yellow
+        $Connectors = Get-ConnectorNodes
+        if ( $Connectors.count -gt 0) {
+            Export-Data -Data $Connectors -Name "Connectors"
+        }
+
+    } catch {
+        throw " Unable to gather connectors.`r`n $_"
+    }
+
     ## Get Apps
     try {
         Write-Host "   Collecting Apps." -ForegroundColor Yellow
@@ -70,7 +81,8 @@ try {
         throw " Unable to gather flows.`r`n $_"
     }
 
-    ## Get Flows
+    ## Get Connections
+    <#
     try {
         Write-Host "   Collecting Connections." -ForegroundColor Yellow
         $Connections = Get-ConnectionNodes
@@ -81,6 +93,7 @@ try {
     } catch {
         throw " Unable to gather connections.`r`n $_"
     }
+    #>
 
     ## Mapping Time
     Write-host "`r`n Gathering edges." -ForegroundColor White
@@ -104,7 +117,7 @@ try {
     Export-CypherNode -Type "Node" -Data $Environments
     Export-CypherNode -Type "Node" -Data $Apps -Method "Append"
     Export-CypherNode -Type "Node" -Data $Flows -Method "Append"
-    Export-CypherNode -Type "Node" -Data $Connections -Method "Append"
+    Export-CypherNode -Type "Node" -Data $Connectors -Method "Append"
 
     ## Edge Exports
     Export-CypherEdge -Type "Edge" -Data $EnvironmentEdges -Method "Append"

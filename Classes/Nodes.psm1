@@ -15,6 +15,20 @@ Class BaseNode {
     }
 }
 
+Class ConnectorNode : BaseNode {
+    [Bool]$Native
+
+    ConnectorNode(){}
+    ConnectorNode(
+        [String]$Id,
+        [String]$Type,
+        [String]$Name,
+        [Bool]$Native
+    ) : base ($Id, $Type, $Name){
+        $this.Native = $Native
+    }
+}
+
 Class FlowNode : BaseNode {
     [Bool]$Enabled
     [String]$UserType

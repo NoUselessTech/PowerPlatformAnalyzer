@@ -1,5 +1,46 @@
 Using Module ..\Classes\Nodes.psm1
 
+Function Get-ConnectorNodes {
+    # Gets all connectors that are native out of the box from Mircosoft
+    # and adds them to the environment. 
+    # This does not cover customer connectors.
+    try {
+        $Return = @()
+        $Connectors = Import-Csv '.\Documentation\Connectors.csv'
+
+        # Setup Counters
+        $Counter = 0
+        $Count = $Connectors.Count
+        ForEach($Connector in $Connectors) {
+            $Counter++
+            Write-Progress `
+                -Id 1 `
+                -Activity "Gathering Connectors." `
+                -Status $Connector.Name `
+                -PercentComplete ((100 * $Counter)/$Count)
+
+            $Obj = [ConnectorNode]::new(
+                $Connector.Id,
+                $Connector.Type,
+                $Connector.Name,
+                $Connector.Native
+            )
+
+            $Return += $Obj
+        }
+        
+        Write-Progress -Id 1 -Activity "Gathering flows." `
+        -Completed
+
+        return $Return
+
+    } catch {
+        throw $_
+    }
+
+
+}
+
 Function Get-FlowNodes {
     # Simple function to transform flow objects to single level class
     $Return = @()
@@ -141,7 +182,7 @@ Function Get-EnvironmentNodes{
                 $Environment.Location,
                 $Environment.CreatedDateTime,
                 $Environment.CreatedBy.Id,
-                $Environment.CreatedBy.DisplayName,
+                $Environment.CreatedBy.Name,
                 $Environment.CreatedBy.Type,
                 $Environment.LastModifiedTime,
                 $Environment.LastModifiedBy,
@@ -181,7 +222,7 @@ Function Get-ConnectionNodes() {
         ForEach($Connection in $Connections) {
             $Counter++
             Write-Progress -Id 1 -Activity "Gathering Connections" `
-                -Status "$($Connection.DisplayName)" `
+                -Status "$($Connection.Name)" `
                 -PercentComplete ($Counter * 100 / $Count)
 
             $Node = [ConnectionNode]::new()
