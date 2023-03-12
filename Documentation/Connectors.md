@@ -1,4 +1,4 @@
-# Connections
+# Connectors
 
 ## Data Model
 ```
