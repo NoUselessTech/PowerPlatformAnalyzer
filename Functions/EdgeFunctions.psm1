@@ -18,7 +18,9 @@ Function Get-EnvironmentEdges {
                 $Edge = [BasicEdge]::new(
                     "Contains",
                     $Environment.Id,
-                    $App.Id
+                    $Environment.Type,
+                    $App.Id,
+                    $App.Type
                 )
                 $Return += $Edge
             }
@@ -27,7 +29,9 @@ Function Get-EnvironmentEdges {
                 $Edge = [BasicEdge]::new(
                     "Contains",
                     $Environment.Id,
-                    $Flow.Id
+                    $Environment.Type,
+                    $Flow.Id,
+                    $Flow.Type
                 )
 
                 $Return += $Edge

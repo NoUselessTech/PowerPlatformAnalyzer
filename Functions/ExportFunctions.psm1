@@ -43,7 +43,7 @@ Function Export-CypherEdge{
 
     if ($Null -ne $Data) {
         ForEach($Datum in $Data) {
-            $OutString = "MATCH (A {Id:'$($Datum.Source)'}),(B {Id:'$($Datum.Target)'}) "
+            $OutString = "MATCH (A:$($Datum.SourceType) {Id:'$($Datum.Source)'}),(B:$($Datum.TargetType) {Id:'$($Datum.Target)'}) "
             $OutString += " CREATE (A)-[:$($Datum.Relationship)]->(B);"
 
             Switch($Method){

@@ -1,17 +1,17 @@
 Class BaseNode {
     [String]$Id
     [String]$Type
-    [String]$DisplayName
+    [String]$Name
 
     BaseNode(){}
     BaseNode(
         [String]$Id,
         [String]$Type,
-        [String]$DisplayName
+        [String]$Name
     ) {
         $this.Id = $Id
         $this.Type = $Type
-        $this.DisplayName = $DisplayName
+        $this.Name = $Name
     }
 }
 

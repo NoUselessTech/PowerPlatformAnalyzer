@@ -33,7 +33,7 @@ Function Get-FlowNodes {
             
             $Node.Id = $Flow.FlowName
             $Node.Type = "Flow"
-            $Node.DisplayName = $Flow.DisplayName
+            $Node.Name = $Flow.DisplayName
             $Node.Enabled = $Flow.Enabled
             $Node.UserType = $Flow.UserType
             $Node.CreatedTime = $Flow.CreatedTime
@@ -89,7 +89,7 @@ Function Get-AppNodes {
             
             $Node.Id = $App.AppName
             $Node.Type = "App"
-            $Node.DisplayName = $App.DisplayName
+            $Node.Name = $App.DisplayName
             $Node.CreatedTime = $App.CreatedTime
             $Node.Owner = $App.Owner
             $Node.LastModifiedTime = $App.LastModifiedTime
@@ -187,7 +187,7 @@ Function Get-ConnectionNodes() {
             $Node = [ConnectionNode]::new()
             $Node.Id = $Connection.ConnectionName
             $Node.Type = "Connection"
-            $Node.DisplayName = $Connection.DisplayName
+            $Node.Name = $Connection.DisplayName
             $Node.FullConnectorName = $Connection.FullConnectorName
             $Node.ConnectorName = $Connection.ConnectorName
             $Node.CreatedTime = $Connection.CreatedTime
